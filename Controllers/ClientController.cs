@@ -13,18 +13,18 @@ namespace ClientApp.Controllers
     [Route("api/Client")]
     public class ClientController : Controller
     {
-        private readonly IApplicationClientService _clientService;
+        private readonly IApplicationClientService _applicationClientService;
 
-        public ClientController(IApplicationClientService clientService)
+        public ClientController(IApplicationClientService applicationClientService)
         {
-            _clientService = clientService;
+            _applicationClientService = applicationClientService;
         }
 
         [HttpGet]
         [Route("getclients")]
-        public string GetClients()
+        public IList<Client> GetClients()
         {
-            return "ok";
+            return _applicationClientService.GetClients();
         }
     }
 }

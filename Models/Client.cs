@@ -8,7 +8,7 @@ namespace ClientApp.Models
     public class Client
     {
         public string ClientId { get; set; }
-        public string Clientname { get; set; }
+        public string ClientName { get; set; }
         public string ClientUri { get; set; }
         public string Secret { get; set; }
         public int[] ApiResources { get; set; }
