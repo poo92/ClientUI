@@ -5,9 +5,11 @@ VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApp", "ClientApp.csproj", "{310120F5-D6F4-422F-BFDE-934C74646FF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "..\DataAccessLayer\DataAccessLayer.csproj", "{2929A677-49A5-4D9A-86C5-AD6C36798E1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccessLayer", "..\DataAccessLayer\DataAccessLayer.csproj", "{2929A677-49A5-4D9A-86C5-AD6C36798E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{C7DAA41B-8519-4502-87C2-211BEEDD0DE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogicLayer", "BusinessLogicLayer\BusinessLogicLayer.csproj", "{C7DAA41B-8519-4502-87C2-211BEEDD0DE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedModels", "..\SharedModels\SharedModels.csproj", "{94402FCD-9FA2-405E-906C-D2A249534EF4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{C7DAA41B-8519-4502-87C2-211BEEDD0DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7DAA41B-8519-4502-87C2-211BEEDD0DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7DAA41B-8519-4502-87C2-211BEEDD0DE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94402FCD-9FA2-405E-906C-D2A249534EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94402FCD-9FA2-405E-906C-D2A249534EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94402FCD-9FA2-405E-906C-D2A249534EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94402FCD-9FA2-405E-906C-D2A249534EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
