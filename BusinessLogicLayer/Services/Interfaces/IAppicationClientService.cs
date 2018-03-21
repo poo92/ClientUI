@@ -12,5 +12,6 @@ namespace BusinessLogicLayer.Services.Interfaces
         List<string> GetGrantTypes();
         List<ApiResource> GetApiResources();
         List<IdentityResource> GetIdentityResources();
+        void AddClient(Client client);
     }
 }

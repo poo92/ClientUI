@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessLogicLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using SharedModels;
 
 namespace ClientApp.Controllers
@@ -21,7 +23,7 @@ namespace ClientApp.Controllers
         }
 
         [HttpGet]
-        [Route("getclients")]
+        [Route("getClients")]
         public List<Client> GetClients()
         {
             return _applicationClientService.GetClients();
@@ -47,5 +49,23 @@ namespace ClientApp.Controllers
         {
             return _applicationClientService.GetIdentityResources();
         }
+
+        [HttpGet]
+        [Route("getgranttypes")]
+        public List<string> GetGrantTypes()
+        {
+            return _applicationClientService.GetGrantTypes();
+        }
+
+        
+        
+        [HttpPost]
+        [Route("addclient")]
+        public string AddClient([FromBody]Client client)
+        {
+            _applicationClientService.AddClient(client);
+            return "ok";
+        }
+
     }
 }

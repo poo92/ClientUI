@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <None Remove="ClientApp\app\components\addclient\addclient.ts" />
+    <None Remove="ClientApp\app\components\viewallclients\viewallclients.ts" />
+    <None Remove="ClientApp\app\components\viewclient\viewclient.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -67,6 +69,8 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\components\addclient\addclient.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\viewallclients\viewallclients.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\viewclient\viewclient.ts" />
   </ItemGroup>
   
 </Project>
