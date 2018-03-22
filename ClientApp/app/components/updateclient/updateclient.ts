@@ -5,7 +5,7 @@ import { Router } from 'aurelia-router';
 
 //let httpClient = new HttpClient();
 @inject(HttpClient, Router)
-export class ViewClient {
+export class UpdateClient {
 	public httpClient: HttpClient;
 	public router: Router;
 	public client: Client;

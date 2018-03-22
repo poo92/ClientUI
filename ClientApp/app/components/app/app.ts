@@ -36,11 +36,11 @@ export class App {
 				nav: true,
 				title: 'View Clients'
 			}, {
-				route: 'viewclient/:clientId',
-				name: 'viewclient',
-				href: "viewclient",
+				route: 'updateclient/:clientId',
+				name: 'updateclient',
+				href: "updateclient",
 				settings: { icon: 'th-list' },
-				moduleId: PLATFORM.moduleName('../viewclient/viewclient'),
+				moduleId: PLATFORM.moduleName('../updateclient/updateclient'),
 				nav: false,
 				title: 'View Client'
 			},

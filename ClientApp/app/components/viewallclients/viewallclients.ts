@@ -30,7 +30,7 @@ export class ViewAllClients {
 	}
 
 	public onSelectContact(event: UIEvent, client: Client) {
-		this.router.navigateToRoute('viewclient', { clientId: client.clientId })
+		this.router.navigateToRoute('updateclient', { clientId: client.clientId })
 	}
 }
 
