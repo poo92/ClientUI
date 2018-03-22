@@ -57,8 +57,8 @@ namespace ClientApp.Controllers
             return _applicationClientService.GetGrantTypes();
         }
 
-        
-        
+
+
         [HttpPost]
         [Route("addclient")]
         public string AddClient([FromBody]Client client)
@@ -67,5 +67,13 @@ namespace ClientApp.Controllers
             return "ok";
         }
 
+        [HttpPost]
+        [Route("getclientbyclientid")]
+        public Client GetClientByClientId([FromBody]Client client)
+        {
+            
+
+            return _applicationClientService.GetClientByClientId(client.ClientId);
+        }
     }
 }

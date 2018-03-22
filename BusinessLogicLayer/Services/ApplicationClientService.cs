@@ -29,8 +29,9 @@ namespace BusinessLogicLayer.Services
                 client.ClientId = c.ClientId;
                 client.ClientName = c.ClientName;
                 client.ClientUri = c.ClientUri;
+                client.FrontChannelLogoutUrl = c.FrontChannelLogoutUri;
 
-                if(c.AllowedGrantTypes.Count > 0)
+                if (c.AllowedGrantTypes.Count > 0)
                 {
                     client.GrantType = c.AllowedGrantTypes[0].GrantType;
                 }
@@ -50,17 +51,16 @@ namespace BusinessLogicLayer.Services
                     client.PostLogoutUrl = c.PostLogoutRedirectUris[0].PostLogoutRedirectUri;
                 }
 
-                if(c.AllowedScopes.Count > 0)
+                if (c.AllowedScopes.Count > 0)
                 {
                     client.IdentityResources = new string[c.AllowedScopes.Count];
 
-                    for (int i=0; i< c.AllowedScopes.Count; i++)
+                    for (int i = 0; i < c.AllowedScopes.Count; i++)
                     {
                         ClientScope clientScope = new ClientScope();
                         client.IdentityResources[i] = clientScope.Scope;
                     }
                 }
-
                 list.Add(client);
             }
             return list;
@@ -128,6 +128,7 @@ namespace BusinessLogicLayer.Services
             clientModel.ClientName = client.ClientName;
             clientModel.ClientUri = client.ClientUri;
             clientModel.ClientId = client.ClientId;
+            clientModel.FrontChannelLogoutUri = client.FrontChannelLogoutUrl;
 
             ClientSecret secret = new ClientSecret();
             secret.Value = new IdentityServer4.Models.Secret(client.ClientSecret.Sha256()).Value;
@@ -172,6 +173,48 @@ namespace BusinessLogicLayer.Services
 
             _applicationClientRepository.AddClient(clientModel);
 
+        }
+        public SharedModels.Client GetClientByClientId(string clientId)
+        {
+            var clientDto = _applicationClientRepository.GetClientByClientId(clientId);
+
+            var client = new SharedModels.Client();
+            client.ClientId = clientDto.ClientId;
+            client.ClientName = clientDto.ClientName;
+            client.ClientUri = clientDto.ClientUri;
+            client.FrontChannelLogoutUrl = clientDto.FrontChannelLogoutUri;
+
+            if (clientDto.AllowedGrantTypes.Count > 0)
+            {
+                client.GrantType = clientDto.AllowedGrantTypes[0].GrantType;
+            }
+
+            if (clientDto.Properties.Count > 0)
+            {
+                client.ClientProperty = clientDto.Properties[0].Value;
+            }
+
+            if (clientDto.RedirectUris.Count > 0)
+            {
+                client.RedirectUrl = clientDto.RedirectUris[0].RedirectUri;
+            }
+
+            if (clientDto.PostLogoutRedirectUris.Count > 0)
+            {
+                client.PostLogoutUrl = clientDto.PostLogoutRedirectUris[0].PostLogoutRedirectUri;
+            }
+
+            if (clientDto.AllowedScopes.Count > 0)
+            {
+                client.IdentityResources = new string[clientDto.AllowedScopes.Count];
+
+                for (int i = 0; i < clientDto.AllowedScopes.Count; i++)
+                {
+                    ClientScope clientScope = new ClientScope();
+                    client.IdentityResources[i] = clientScope.Scope;
+                }
+            }
+            return client;
         }
     }
 }

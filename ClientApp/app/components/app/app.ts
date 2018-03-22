@@ -34,16 +34,15 @@ export class App {
 				settings: { icon: 'th-list' },
 				moduleId: PLATFORM.moduleName('../viewallclients/viewallclients'),
 				nav: true,
-				title: 'View Clients',
-				children: [{
-					route: 'viewallclients/viewclient/:clientId',
-					name: 'viewallclients/viewclient',
-					href: 'viewallclients/viewclient',
-					settings: { icon: 'th-list' },
-					moduleId: PLATFORM.moduleName('../viewclient/viewclient'),
-					nav: true,
-					title: 'View Client'
-				}]
+				title: 'View Clients'
+			}, {
+				route: 'viewclient/:clientId',
+				name: 'viewclient',
+				href: "viewclient",
+				settings: { icon: 'th-list' },
+				moduleId: PLATFORM.moduleName('../viewclient/viewclient'),
+				nav: false,
+				title: 'View Client'
 			},
 			{
 				route: 'fetch-data',

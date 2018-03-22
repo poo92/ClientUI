@@ -13,5 +13,6 @@ namespace BusinessLogicLayer.Services.Interfaces
         List<ApiResource> GetApiResources();
         List<IdentityResource> GetIdentityResources();
         void AddClient(Client client);
+        Client GetClientByClientId(string clientId);
     }
 }

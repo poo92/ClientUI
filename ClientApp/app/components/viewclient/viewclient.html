@@ -6,33 +6,115 @@
 		<br />
 		<!--<p if.bind="!forecasts"><em>Loading...</em></p>-->
 		<div class="panel-body">
-			<!--<p if.bind="!forecasts"><em>Loading...</em></p>-->
-			<div class="table-responsive">
-				<table class="table cl-xs-10 table-bordered">
-					<thead class="thead-dark">
-						<tr>
-							<th scope="col">Client ID</th>
-							<th scope="col">Client Name</th>
-							<th scope="col">Grant Type</th>
-							<th scope="col">Client Property</th>
-							<th scope="col">Client URI</th>
-							<th scope="col">Redirect URL</th>
-							<th scope="col">Post Logout URL</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr repeat.for="client of clients" click.delegate="onSelectContact($event, contact)">
-							<td>${ client.clientId }</td>
-							<td>${ client.clientName }</td>
-							<td>${ client.grantType }</td>
-							<td>${ client.clientProperty }</td>
-							<td>${ client.clientUri }</td>
-							<td>${ client.redirectUrl }</td>
-							<td>${ client.postLogoutUrl }</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+			<form>
+				<div class="form-group">
+					<div class="row">
+
+						<div class="col-xs-5">
+							<!-- Client Id -->
+							<label for="clientId" class="control-label">Client ID</label>
+							<input type="text" class="form-control" id="clientId" name="clientId" placeholder="Client ID" value.bind="client.clientId">
+						</div>
+
+						<div class="col-xs-5">
+							<!-- Client Name -->
+							<label for="clientName" class="control-label">Client Name</label>
+							<input type="text" class="form-control" id="clientName" name="clientName" placeholder="Client Name" value.bind="client.clientName">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+
+						<div class="col-xs-5">
+							<!-- Client Secret -->
+							<label for="clientSecret" class="control-label">Client Secret</label>
+							<input type="text" class="form-control" id="clientSecret" name="clientSecret" placeholder="Clinet Secret" value.bind="client.clientSecret">
+						</div>
+
+						<div class="col-xs-5">
+							<!-- Grant Type -->
+							<label for="grantType" class="control-label">Grant Type</label>
+							<select class="form-control" value.bind="client.grantType">
+								<option model.bind="null">Choose...</option>
+								<option repeat.for="gt of grantTypes"
+										model.bind="gt">
+									${gt}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-5">
+							<!-- Client Properties -->
+							<label for="clientProperties" class="control-label">Client Properties</label>
+							<select class="form-control" value.bind="client.clientProperty">
+								<option model.bind="null">Choose...</option>
+								<option repeat.for="cp of clientProperties"
+										model.bind="cp">
+									${cp}
+								</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="row">
+						<div class="col-xs-5">
+							<!-- Identity Resources -->
+							<label for="identityResources" class="control-label">Identity Resources</label>
+							<p repeat.for="identityResource of identityResources">
+								<input type="checkbox" model.bind="identityResource.name" checked.bind="selectedIdentityResources">
+								${identityResource.name}
+							</p>
+						</div>
+
+						<div class="col-xs-5">
+							<label for="ApiResources" class="control-label">Api Resources</label>
+							<p repeat.for="apiResource of apiResources">
+								<input type="checkbox" model.bind="apiResource.name" checked.bind="selectedApiResources">
+								${apiResource.name}
+							</p>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<!-- Client Redirect Url -->
+					<label for="clientUri" class="control-label">Client URI</label>
+					<input type="text" class="form-control" id="clientUri" name="clientUri" placeholder="Client URI" value.bind="client.clientUri">
+				</div>
+
+				<div class="form-group">
+					<!-- Redirect Url -->
+					<label for="redirectUrl" class="control-label">Redirect URL</label>
+					<input type="text" class="form-control" id="redirectUrl" name="redirectUrl" placeholder="Redirect URL" value.bind="client.redirectUrl">
+				</div>
+
+				<div class="form-group">
+					<!-- Front Channel Logout Url -->
+					<label for="frontChannelLogoutUrl" class="control-label">Front Channel Logout URL</label>
+					<input type="text" class="form-control" id="frontChannelLogoutUrl" name="frontChannelLogoutUrl" placeholder="Front Channel Logout URL" value.bind="client.frontChannelLogoutUrl">
+				</div>
+
+				<div class="form-group">
+					<!-- Post Logout Url -->
+					<label for="postLogoutUrl" class="control-label">Post Logout URL</label>
+					<input type="text" class="form-control" id="postLogoutUrl" name="postLogoutUrl" placeholder="Post Logout URL" value.bind="client.postLogoutUrl">
+				</div>
+
+				<div class="form-group">
+					<!-- Submit Button -->
+					<button type="submit" class="btn btn-primary" click.delegate="upload()">Upload</button>
+				</div>
+
+			</form>
 		</div>
 	</div>
 </template>

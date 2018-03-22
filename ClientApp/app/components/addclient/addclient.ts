@@ -6,9 +6,10 @@ import { inject } from 'aurelia-framework';
 export class AddClient {
 	public httpClient: HttpClient;
 	public clientProperties: Array<string> = [];
+	public grantTypes: Array<string> = [];
 	public apiResources: Array<string> = [];
 	public identityResources: Array<string> = [];
-	public grantTypes: Array<string> = [];
+	
 
 	public clientName: string = "poornima";
 	public clientId: string = "Poornima";
@@ -26,9 +27,10 @@ export class AddClient {
 	constructor(httpClient: HttpClient) {
 		this.httpClient = httpClient;
 		this.getClientProperties();
+		this.getGrantTypes();
 		this.getApiResource();
 		this.getIdentityResource();
-		this.getGrantTypes();
+		
 	}
 
 	public getClientProperties() {
@@ -36,6 +38,14 @@ export class AddClient {
 			.then(result => result.json())
 			.then(data => {
 				this.clientProperties = data;
+			});
+	}
+
+	public getGrantTypes() {
+		this.httpClient.fetch('api/client/getgranttypes')
+			.then(result => result.json())
+			.then(data => {
+				this.grantTypes = data;
 			});
 	}
 
@@ -61,13 +71,7 @@ export class AddClient {
 			});
 	}
 
-	public getGrantTypes() {
-		this.httpClient.fetch('api/client/getgranttypes')
-			.then(result => result.json())
-			.then(data => {				
-				this.grantTypes = data;
-			});
-	}
+	
 
 	public add() {
 		var client = { ClientId: this.clientId, ClientName: this.clientName, ClientSecret: this.clientSecret, GrantType: this.grantType, ClientProperty: this.clientProperty, IdentityResources: this.selectedIdentityResources, ApiResources: this.selectedApiResources, ClientUri: this.clientUri, RedirectUrl: this.redirectUrl, FrontChannelLogoutUrl: this.frontChannelLogoutUrl, PostLogoutUrl: this.postLogoutUrl };

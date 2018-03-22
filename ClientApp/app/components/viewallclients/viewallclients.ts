@@ -4,7 +4,7 @@ import { Router } from 'aurelia-router';
 
 //let httpClient = new HttpClient();
 @inject(HttpClient, Router)
-export class AddClient {
+export class ViewAllClients {
 	public httpClient: HttpClient;
 	public router: Router;
 	public clients: Array<Client> = [];
@@ -15,11 +15,11 @@ export class AddClient {
 	constructor(httpClient: HttpClient, router: Router) {
 		this.httpClient = httpClient;
 		this.router = router;
-		this.getClients();
+		this.getAllClients();
 		
 	}
 
-	public getClients() {
+	public getAllClients() {
 		this.httpClient.fetch('api/client/getClients')
 			.then(result => result.json())
 			.then(data => {
