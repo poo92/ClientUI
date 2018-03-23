@@ -1,16 +1,18 @@
 ﻿import { HttpClient, json } from 'aurelia-fetch-client';
 import { inject } from 'aurelia-framework';
 import { Router } from 'aurelia-router';
-
+import { Client } from '../helpers/client';
+import { ClientHelper } from '../helpers/clienthelper';
+import { DialogService } from 'aurelia-dialog';
 
 //let httpClient = new HttpClient();
-@inject(HttpClient, Router)
+@inject(HttpClient, Router, ClientHelper, DialogService)
 export class UpdateClient {
 	public httpClient: HttpClient;
 	public router: Router;
 	public client: Client;
-	public clientProperties: Array<string> = [];
-	public grantTypes: Array<string> = [];
+	public clientHelper: ClientHelper;
+	public dialogService: DialogService;
 
 	public clientName: string = "";
 	public clientId: string = "";
@@ -21,31 +23,16 @@ export class UpdateClient {
 	public redirectUrl: string = "";
 	public frontChannelLogoutUrl: string = "";
 	public postLogoutUrl: string = "";
-	public clientScopes: Array<string> = [];
+	public selectedIdentityResources: Array<number> = [];
+	public selectedApiResources: Array<number> = [];
+	public allowedScopes: Array<number> = [];
 
 
-
-	constructor(httpClient: HttpClient, router: Router) {
+	constructor(httpClient: HttpClient, router: Router, clientHelper: ClientHelper, dialogService: DialogService) {
 		this.httpClient = httpClient;
+		this.clientHelper = clientHelper;
 		this.router = router;
-		this.getClientProperties();
-		this.getGrantTypes();
-	}
-
-	public getClientProperties() {
-		this.httpClient.fetch('api/client/getclientproperties')
-			.then(result => result.json())
-			.then(data => {
-				this.clientProperties = data;
-			});
-	}
-
-	public getGrantTypes() {
-		this.httpClient.fetch('api/client/getgranttypes')
-			.then(result => result.json())
-			.then(data => {
-				this.grantTypes = data;
-			});
+		this.dialogService = dialogService;
 	}
 
 	activate(params: { clientId: string; }) {
@@ -61,23 +48,59 @@ export class UpdateClient {
 			.then(result => result.json())
 			.then(data => {
 				console.log(data);
+				if (data.allowedScopes) {
+					for (let scope of data.allowedScopes) {
+						scope = scope.replace(/_/g, " "); // to replace all occurences		
+						for (let ir of this.clientHelper.identityResources) {
+							if (ir.name == scope) {
+								this.selectedIdentityResources.push(scope);
+							}
+						}
+
+						for (let ap of this.clientHelper.apiResources) {
+							if (ap.name == scope) {
+								this.selectedApiResources.push(scope);
+							}
+						}
+					}
+				}
+
 				this.client = data;
 			});
 	}
 
-}
+	public update() {
+		for (let resource of this.selectedIdentityResources) {
+			this.allowedScopes.push(resource);
+		}
+		for (let resource of this.selectedApiResources) {
+			this.allowedScopes.push(resource);
+		}
 
-class Client {
-	public clientId: string = "";
-	public clientName: string = "";
-	public clientSecret: string = "";
-	public grantType: string = "";
-	public glientProperty: string = "";
-	public clientUri: string = "";
-	public redirectUrl: string = "";
-	public frontChannelLogoutUrl: string = "";
-	public postLogoutUrl: string = "";
-	public identityResources: Array<string> = [];
-	public apiResources: Array<string> = [];
+		var client = { ClientId: this.client.clientId, ClientName: this.client.clientName, ClientSecret: this.client.clientSecret, GrantType: this.client.grantType, ClientProperty: this.client.clientProperty, AllowedScopes: this.allowedScopes, ClientUri: this.client.clientUri, RedirectUrl: this.client.redirectUrl, FrontChannelLogoutUrl: this.client.frontChannelLogoutUrl, PostLogoutUrl: this.client.postLogoutUrl };
 
+		this.httpClient.fetch('api/client/updateclient',
+			{
+				method: "POST",
+				body: JSON.stringify(client),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			})
+			.then(result => result.json())
+			.then(data => {
+				alert(data);
+			});
+	}
+
+	public delete(clientId: string) {
+		this.dialogService.open({ viewModel: prompt, model: 'Good or Bad?', lock: false }).whenClosed(response => {
+			if (!response.wasCancelled) {
+				console.log('good');
+			} else {
+				console.log('bad');
+			}
+			console.log(response.output);
+		});
+	}
 }

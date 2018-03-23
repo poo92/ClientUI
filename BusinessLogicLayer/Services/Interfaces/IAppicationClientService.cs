@@ -14,5 +14,7 @@ namespace BusinessLogicLayer.Services.Interfaces
         List<IdentityResource> GetIdentityResources();
         void AddClient(Client client);
         Client GetClientByClientId(string clientId);
+        void UpdateClient(Client client);
+        void DeleteClient(Client client);
     }
 }

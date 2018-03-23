@@ -38,7 +38,7 @@
 							<label for="grantType" class="control-label">Grant Type</label>
 							<select class="form-control" value.bind="grantType">
 								<option model.bind="null">Choose...</option>
-								<option repeat.for="gt of grantTypes"
+								<option repeat.for="gt of clientHelper.grantTypes"
 										model.bind="gt">
 									${gt}
 								</option>
@@ -54,7 +54,7 @@
 							<label for="clientProperties" class="control-label">Client Properties</label>
 							<select class="form-control" value.bind="clientProperty">
 								<option model.bind="null">Choose...</option>
-								<option repeat.for="cp of clientProperties"
+								<option repeat.for="cp of clientHelper.clientProperties"
 										model.bind="cp">
 									${cp}
 								</option>
@@ -68,7 +68,7 @@
 						<div class="col-xs-5">
 							<!-- Identity Resources -->
 							<label for="identityResources" class="control-label">Identity Resources</label>
-							<p repeat.for="identityResource of identityResources">
+							<p repeat.for="identityResource of clientHelper.identityResources">
 								<input type="checkbox" model.bind="identityResource.name" checked.bind="selectedIdentityResources">
 								${identityResource.name}
 							</p>
@@ -76,7 +76,7 @@
 
 						<div class="col-xs-5">
 							<label for="ApiResources" class="control-label">Api Resources</label>
-							<p repeat.for="apiResource of apiResources">
+							<p repeat.for="apiResource of clientHelper.apiResources">
 								<input type="checkbox" model.bind="apiResource.name" checked.bind="selectedApiResources">
 								${apiResource.name}
 							</p>

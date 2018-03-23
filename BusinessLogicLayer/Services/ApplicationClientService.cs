@@ -16,55 +16,7 @@ namespace BusinessLogicLayer.Services
         public ApplicationClientService(IApplicationClientRepository applicationClientService)
         {
             _applicationClientRepository = applicationClientService;
-        }
-
-        public List<SharedModels.Client> GetClients()
-        {
-            var list = new List<SharedModels.Client>();
-            var result = _applicationClientRepository.GetClients();
-
-            foreach (IdentityServer4.EntityFramework.Entities.Client c in result)
-            {
-                var client = new SharedModels.Client();
-                client.ClientId = c.ClientId;
-                client.ClientName = c.ClientName;
-                client.ClientUri = c.ClientUri;
-                client.FrontChannelLogoutUrl = c.FrontChannelLogoutUri;
-
-                if (c.AllowedGrantTypes.Count > 0)
-                {
-                    client.GrantType = c.AllowedGrantTypes[0].GrantType;
-                }
-
-                if (c.Properties.Count > 0)
-                {
-                    client.ClientProperty = c.Properties[0].Value;
-                }
-
-                if (c.RedirectUris.Count > 0)
-                {
-                    client.RedirectUrl = c.RedirectUris[0].RedirectUri;
-                }
-
-                if (c.PostLogoutRedirectUris.Count > 0)
-                {
-                    client.PostLogoutUrl = c.PostLogoutRedirectUris[0].PostLogoutRedirectUri;
-                }
-
-                if (c.AllowedScopes.Count > 0)
-                {
-                    client.IdentityResources = new string[c.AllowedScopes.Count];
-
-                    for (int i = 0; i < c.AllowedScopes.Count; i++)
-                    {
-                        ClientScope clientScope = new ClientScope();
-                        client.IdentityResources[i] = clientScope.Scope;
-                    }
-                }
-                list.Add(client);
-            }
-            return list;
-        }
+        }     
 
         public List<string> GetClientProperties()
         {
@@ -120,8 +72,49 @@ namespace BusinessLogicLayer.Services
 
             return grantTypes;
         }
+        public List<SharedModels.Client> GetClients()
+        {
+            var list = new List<SharedModels.Client>();
+            var result = _applicationClientRepository.GetClients();
+
+            foreach (IdentityServer4.EntityFramework.Entities.Client clientModel in result)
+            {
+                SharedModels.Client client = MapDaltoBll(clientModel);
+                list.Add(client);
+            }
+            return list;
+        }
+
+        public SharedModels.Client GetClientByClientId(string clientId)
+        {
+            var clientModel = _applicationClientRepository.GetClientByClientId(clientId);
+            SharedModels.Client client = MapDaltoBll(clientModel);
+            return client;
+        }
 
         public void AddClient(SharedModels.Client client)
+        {
+            IdentityServer4.EntityFramework.Entities.Client clientModel = MapBllToDal(client);
+            _applicationClientRepository.AddClient(clientModel);
+
+        }       
+
+        public void DeleteClient(SharedModels.Client client)
+        {
+            IdentityServer4.EntityFramework.Entities.Client clientModel = MapBllToDal(client);
+        }
+
+        public void UpdateClient(SharedModels.Client client)
+        {
+            IdentityServer4.EntityFramework.Entities.Client clientModel = MapBllToDal(client);
+
+            var deleteobj = _applicationClientRepository.GetClientByClientId(clientModel.ClientId);
+            _applicationClientRepository.DeleteClient(deleteobj);
+            _applicationClientRepository.AddClient(clientModel);
+
+        }
+
+        private IdentityServer4.EntityFramework.Entities.Client MapBllToDal(SharedModels.Client client)
         {
             IdentityServer4.EntityFramework.Entities.Client clientModel = new IdentityServer4.EntityFramework.Entities.Client();
 
@@ -148,13 +141,7 @@ namespace BusinessLogicLayer.Services
             clientModel.Properties.Add(clientProperty);
 
             clientModel.AllowedScopes = new List<ClientScope>();
-            foreach (string s in client.IdentityResources)
-            {
-                ClientScope clientScope = new ClientScope();
-                clientScope.Scope = s.Replace(" ", "_");
-                clientModel.AllowedScopes.Add(clientScope);
-            }
-            foreach (string s in client.ApiResources)
+            foreach (string s in client.AllowedScopes)
             {
                 ClientScope clientScope = new ClientScope();
                 clientScope.Scope = s.Replace(" ", "_");
@@ -171,50 +158,50 @@ namespace BusinessLogicLayer.Services
             clientModel.PostLogoutRedirectUris = new List<ClientPostLogoutRedirectUri>();
             clientModel.PostLogoutRedirectUris.Add(postLogoutRedirectUrl);
 
-            _applicationClientRepository.AddClient(clientModel);
-
+            return clientModel;
         }
-        public SharedModels.Client GetClientByClientId(string clientId)
+
+        private SharedModels.Client MapDaltoBll(IdentityServer4.EntityFramework.Entities.Client clientModel)
         {
-            var clientDto = _applicationClientRepository.GetClientByClientId(clientId);
+            SharedModels.Client client = new SharedModels.Client();
+            client.ClientId = clientModel.ClientId;
+            client.ClientName = clientModel.ClientName;
+            client.ClientUri = clientModel.ClientUri;
+            client.FrontChannelLogoutUrl = clientModel.FrontChannelLogoutUri;
 
-            var client = new SharedModels.Client();
-            client.ClientId = clientDto.ClientId;
-            client.ClientName = clientDto.ClientName;
-            client.ClientUri = clientDto.ClientUri;
-            client.FrontChannelLogoutUrl = clientDto.FrontChannelLogoutUri;
-
-            if (clientDto.AllowedGrantTypes.Count > 0)
+            if (clientModel.AllowedGrantTypes.Count > 0)
             {
-                client.GrantType = clientDto.AllowedGrantTypes[0].GrantType;
+                client.GrantType = clientModel.AllowedGrantTypes[0].GrantType;
             }
 
-            if (clientDto.Properties.Count > 0)
+            if (clientModel.Properties.Count > 0)
             {
-                client.ClientProperty = clientDto.Properties[0].Value;
+                client.ClientProperty = clientModel.Properties[0].Value;
             }
 
-            if (clientDto.RedirectUris.Count > 0)
+            if (clientModel.RedirectUris.Count > 0)
             {
-                client.RedirectUrl = clientDto.RedirectUris[0].RedirectUri;
+                client.RedirectUrl = clientModel.RedirectUris[0].RedirectUri;
             }
 
-            if (clientDto.PostLogoutRedirectUris.Count > 0)
+            if (clientModel.PostLogoutRedirectUris.Count > 0)
             {
-                client.PostLogoutUrl = clientDto.PostLogoutRedirectUris[0].PostLogoutRedirectUri;
+                client.PostLogoutUrl = clientModel.PostLogoutRedirectUris[0].PostLogoutRedirectUri;
             }
 
-            if (clientDto.AllowedScopes.Count > 0)
+            if (clientModel.AllowedScopes.Count > 0)
             {
-                client.IdentityResources = new string[clientDto.AllowedScopes.Count];
+                client.AllowedScopes = new string[clientModel.AllowedScopes.Count];
 
-                for (int i = 0; i < clientDto.AllowedScopes.Count; i++)
+                for (int i = 0; i < clientModel.AllowedScopes.Count; i++)
                 {
-                    ClientScope clientScope = new ClientScope();
-                    client.IdentityResources[i] = clientScope.Scope;
+                    ClientScope clientScope = clientModel.AllowedScopes[i];
+                    client.AllowedScopes[i] = clientScope.Scope;
                 }
+                
             }
             return client;
         }
+       
     }
 }

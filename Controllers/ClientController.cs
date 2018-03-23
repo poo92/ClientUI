@@ -75,5 +75,21 @@ namespace ClientApp.Controllers
 
             return _applicationClientService.GetClientByClientId(client.ClientId);
         }
+
+        [HttpPost]
+        [Route("updateclient")]
+        public string UpdateClient([FromBody]Client client)
+        {
+            _applicationClientService.UpdateClient(client);
+            return "ok";
+        }
+
+        [HttpPost]
+        [Route("deleteclient")]
+        public string DeleteClient([FromBody]Client client)
+        {
+            _applicationClientService.DeleteClient(client);
+            return "ok";
+        }
     }
 }
