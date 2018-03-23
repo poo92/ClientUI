@@ -88,7 +88,7 @@ namespace ClientApp.Controllers
         [Route("deleteclient")]
         public string DeleteClient([FromBody]Client client)
         {
-            _applicationClientService.DeleteClient(client);
+            _applicationClientService.DeleteClient(client.ClientId);
             return "ok";
         }
     }

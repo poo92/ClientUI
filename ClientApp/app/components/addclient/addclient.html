@@ -13,13 +13,13 @@
 						<div class="col-xs-5">
 							<!-- Client Id -->
 							<label for="clientId" class="control-label">Client ID</label>
-							<input type="text" class="form-control" id="clientId" name="clientId" placeholder="Client ID" value.bind="clientId">
+							<input type="text" class="form-control" id="clientId" name="clientId" placeholder="Client ID" value.bind="clientId & validate">
 						</div>
 
 						<div class="col-xs-5">
 							<!-- Client Name -->
 							<label for="clientName" class="control-label">Client Name</label>
-							<input type="text" class="form-control" id="clientName" name="clientName" placeholder="Client Name" value.bind="clientName">
+							<input type="text" class="form-control" id="clientName" name="clientName" placeholder="Client Name" value.bind="clientName & validate">
 						</div>
 					</div>
 				</div>
@@ -113,6 +113,17 @@
 					<!-- Submit Button -->
 					<button type="submit" class="btn btn-primary" click.delegate="add()">Add</button>
 				</div>
+
+				<div validation-errors.bind="errors">
+					<input type="text" placeholder="Title" value.bind="title & validate" required>
+
+					<ul if.bind="controller.errors">
+						<li repeat.for="error of controller.errors">
+							${error.message}
+						</li>
+					</ul>
+				</div>
+
 
 			</form>
 		</div>

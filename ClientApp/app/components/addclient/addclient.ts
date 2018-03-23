@@ -1,30 +1,39 @@
 ﻿import { HttpClient, json } from 'aurelia-fetch-client';
 import { inject } from 'aurelia-framework';
+import { Router } from 'aurelia-router';
 import { ClientHelper } from '../helpers/clienthelper';
+import { ValidationControllerFactory, ValidationRules, ValidationController } from 'aurelia-validation';
 
-
-@inject(HttpClient, ClientHelper)
+@inject(HttpClient, ClientHelper, Router, ValidationControllerFactory)
 export class AddClient {
 	public httpClient: HttpClient;
 	public clientHelper: ClientHelper;
-	
+	public router: Router;
+	public controller: ValidationController;
 
-	public clientName: string = "poornima";
-	public clientId: string = "Poornima";
-	public clientSecret: string = "12345";
-	public grantType: string = "password";
-	public clientProperty: string = "Balancer";
-	public clientUri: string = "any";
-	public redirectUrl: string = "any";
-	public frontChannelLogoutUrl: string = "any";
-	public postLogoutUrl: string = "any";
+	public clientName: string = "";
+	public clientId: string = "";
+	public clientSecret: string = "";
+	public grantType: string = "";
+	public clientProperty: string = "";
+	public clientUri: string = "";
+	public redirectUrl: string = "";
+	public frontChannelLogoutUrl: string = "";
+	public postLogoutUrl: string = "";
 	public selectedIdentityResources: Array<number> = [];
 	public selectedApiResources: Array<number> = [];
 	public allowedScopes: Array<number> = [];
 
-	constructor(httpClient: HttpClient, clientHelper: ClientHelper) {
+	constructor(httpClient: HttpClient, clientHelper: ClientHelper, router: Router, controllerFactory: ValidationControllerFactory) {
 		this.httpClient = httpClient;
 		this.clientHelper = clientHelper;	
+		this.router = router;
+		this.controller = controllerFactory.createForCurrentScope();
+
+		ValidationRules
+			.ensure('clientId').required()
+			.ensure('clientName').required()
+			.on(this);
 	}	
 
 	public add() {
@@ -47,7 +56,10 @@ export class AddClient {
 			})
 			.then(result => result.json())
 			.then(data => {
-				alert(data);
+				if (data == "ok") {
+					alert("Client Successfully Added.");
+					this.router.navigateToRoute('viewallclients')
+				}
 			});
 
 	}

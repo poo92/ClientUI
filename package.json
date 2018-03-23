@@ -28,6 +28,7 @@
     "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
-    "aurelia-dialog": "^1.0.0-rc.2.0.0"
+    "aurelia-dialog": "^1.0.0-rc.2.0.0",
+    "aurelia-validation": "^1.1.3"
   }
 }

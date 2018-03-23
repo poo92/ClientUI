@@ -15,6 +15,6 @@ namespace BusinessLogicLayer.Services.Interfaces
         void AddClient(Client client);
         Client GetClientByClientId(string clientId);
         void UpdateClient(Client client);
-        void DeleteClient(Client client);
+        void DeleteClient(string clientId);
     }
 }

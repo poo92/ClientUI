@@ -99,9 +99,10 @@ namespace BusinessLogicLayer.Services
 
         }       
 
-        public void DeleteClient(SharedModels.Client client)
+        public void DeleteClient(string clientId)
         {
-            IdentityServer4.EntityFramework.Entities.Client clientModel = MapBllToDal(client);
+            var deleteobj = _applicationClientRepository.GetClientByClientId(clientId);
+            _applicationClientRepository.DeleteClient(deleteobj);
         }
 
         public void UpdateClient(SharedModels.Client client)

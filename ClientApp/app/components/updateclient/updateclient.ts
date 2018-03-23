@@ -27,6 +27,8 @@ export class UpdateClient {
 	public selectedApiResources: Array<number> = [];
 	public allowedScopes: Array<number> = [];
 
+	public showConfirmDelete: boolean = false;
+
 
 	constructor(httpClient: HttpClient, router: Router, clientHelper: ClientHelper, dialogService: DialogService) {
 		this.httpClient = httpClient;
@@ -47,7 +49,6 @@ export class UpdateClient {
 			})
 			.then(result => result.json())
 			.then(data => {
-				console.log(data);
 				if (data.allowedScopes) {
 					for (let scope of data.allowedScopes) {
 						scope = scope.replace(/_/g, " "); // to replace all occurences		
@@ -89,18 +90,33 @@ export class UpdateClient {
 			})
 			.then(result => result.json())
 			.then(data => {
-				alert(data);
+				if (data == "ok") {
+					alert("Client Successfully Updated.");
+					this.router.navigateToRoute('viewallclients')
+				}
 			});
 	}
 
 	public delete(clientId: string) {
-		this.dialogService.open({ viewModel: prompt, model: 'Good or Bad?', lock: false }).whenClosed(response => {
-			if (!response.wasCancelled) {
-				console.log('good');
-			} else {
-				console.log('bad');
-			}
-			console.log(response.output);
-		});
+		var retVal = confirm("Are you sure you need to delete this client ?");
+		if (retVal == true) {
+			var client = { ClientId: this.client.clientId};
+
+			this.httpClient.fetch('api/client/deleteclient',
+				{
+					method: "POST",
+					body: JSON.stringify(client),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(result => result.json())
+				.then(data => {
+					if (data == "ok") {
+						alert("Client Successfully Deleted.");
+						this.router.navigateToRoute('viewallclients')
+					}					
+				});
+		}
 	}
 }

@@ -115,4 +115,16 @@
 			</form>
 		</div>
 	</div>
+	<div if.bind="showConfirmDelete" class="col-sm-4 col-sm-offset-2" style="margin-top: -550px">		
+			<div class="panel panel-default">
+				<div class="panel-heading" style="font-weight:bold">Confirm Delete</div>
+				<div class="panel-body">
+					<form name="viewCurrentBalance">
+						<p>Are you sure yo want to delete this Client?</p>
+						<button type="submit" class="btn btn-success" click.delegate="confirmedDelete()">Yes</button>
+						<button type="submit" class="btn btn-default">No</button>
+					</form>
+				</div>
+			</div>		
+	</div>
 </template>
