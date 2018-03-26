@@ -10,16 +10,18 @@
 				<div class="form-group">
 					<div class="row">
 
-						<div class="col-xs-5">
+						<div class="col-xs-5" validation-errors.bind="clientIdErrors">
 							<!-- Client Id -->
 							<label for="clientId" class="control-label">Client ID</label>
-							<input type="text" class="form-control" id="clientId" name="clientId" placeholder="Client ID" value.bind="clientId & validate">
+							<input type="text" class="form-control" id="clientId" name="clientId" placeholder="Client ID" value.bind="client.clientId & validate">
+							<strong repeat.for="errorInfo of clientIdErrors">${errorInfo.error.message}</strong>
 						</div>
 
-						<div class="col-xs-5">
+						<div class="col-xs-5" validation-errors.bind="clientNameErrors">
 							<!-- Client Name -->
 							<label for="clientName" class="control-label">Client Name</label>
-							<input type="text" class="form-control" id="clientName" name="clientName" placeholder="Client Name" value.bind="clientName & validate">
+							<input type="text" class="form-control" id="clientName" name="clientName" placeholder="Client Name" value.bind="client.clientName & validate">
+							<strong repeat.for="errorInfo of clientNameErrors">${errorInfo.error.message}</strong>
 						</div>
 					</div>
 				</div>
@@ -30,13 +32,13 @@
 						<div class="col-xs-5">
 							<!-- Client Secret -->
 							<label for="clientSecret" class="control-label">Client Secret</label>
-							<input type="text" class="form-control" id="clientSecret" name="clientSecret" placeholder="Clinet Secret" value.bind="clientSecret">
+							<input type="text" class="form-control" id="clientSecret" name="clientSecret" placeholder="Clinet Secret" value.bind="client.clientSecret & validate">
 						</div>
 
 						<div class="col-xs-5">
 							<!-- Grant Type -->
 							<label for="grantType" class="control-label">Grant Type</label>
-							<select class="form-control" value.bind="grantType">
+							<select class="form-control" value.bind="client.grantType & validate">
 								<option model.bind="null">Choose...</option>
 								<option repeat.for="gt of clientHelper.grantTypes"
 										model.bind="gt">
@@ -52,7 +54,7 @@
 						<div class="col-xs-5">
 							<!-- Client Properties -->
 							<label for="clientProperties" class="control-label">Client Properties</label>
-							<select class="form-control" value.bind="clientProperty">
+							<select class="form-control" value.bind="client.clientProperty & validate">
 								<option model.bind="null">Choose...</option>
 								<option repeat.for="cp of clientHelper.clientProperties"
 										model.bind="cp">
@@ -88,41 +90,41 @@
 				<div class="form-group">
 					<!-- Client Redirect Url -->
 					<label for="clientUri" class="control-label">Client URI</label>
-					<input type="text" class="form-control" id="clientUri" name="clientUri" placeholder="Client URI" value.bind="clientUri">
+					<input type="text" class="form-control" id="clientUri" name="clientUri" placeholder="Client URI" value.bind="client.clientUri & validate">
 				</div>
 
 				<div class="form-group">
 					<!-- Redirect Url -->
 					<label for="redirectUrl" class="control-label">Redirect URL</label>
-					<input type="text" class="form-control" id="redirectUrl" name="redirectUrl" placeholder="Redirect URL" value.bind="redirectUrl">
+					<input type="text" class="form-control" id="redirectUrl" name="redirectUrl" placeholder="Redirect URL" value.bind="client.redirectUrl">
 				</div>
 
 				<div class="form-group">
 					<!-- Front Channel Logout Url -->
 					<label for="frontChannelLogoutUrl" class="control-label">Front Channel Logout URL</label>
-					<input type="text" class="form-control" id="frontChannelLogoutUrl" name="frontChannelLogoutUrl" placeholder="Front Channel Logout URL" value.bind="frontChannelLogoutUrl">
+					<input type="text" class="form-control" id="frontChannelLogoutUrl" name="frontChannelLogoutUrl" placeholder="Front Channel Logout URL" value.bind="client.frontChannelLogoutUrl">
 				</div>
 
 				<div class="form-group">
 					<!-- Post Logout Url -->
 					<label for="postLogoutUrl" class="control-label">Post Logout URL</label>
-					<input type="text" class="form-control" id="postLogoutUrl" name="postLogoutUrl" placeholder="Post Logout URL" value.bind="postLogoutUrl">
+					<input type="text" class="form-control" id="postLogoutUrl" name="postLogoutUrl" placeholder="Post Logout URL" value.bind="client.postLogoutUrl">
 				</div>
 
 				<div class="form-group">
 					<!-- Submit Button -->
-					<button type="submit" class="btn btn-primary" click.delegate="add()">Add</button>
+					<button type="submit" class="btn btn-primary" click.delegate="add()" disabled.bind="!canSave">Add</button>
 				</div>
 
-				<div validation-errors.bind="errors">
-					<input type="text" placeholder="Title" value.bind="title & validate" required>
+				<!--<div validation-errors.bind="errors">
+					<input type="text" placeholder="Title" value.bind="client.clientId & validate" required>
 
 					<ul if.bind="controller.errors">
 						<li repeat.for="error of controller.errors">
 							${error.message}
 						</li>
 					</ul>
-				</div>
+				</div>-->
 
 
 			</form>
